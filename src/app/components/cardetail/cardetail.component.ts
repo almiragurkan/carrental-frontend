@@ -1,8 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Car } from 'src/app/models/car';
 import { CarImage } from 'src/app/models/carimage';
 import { CarDetailService } from 'src/app/services/car-detail.service';
+import { Rental } from 'src/app/models/rental';
+import { RentalService } from 'src/app/services/rental.service';
+import { CustomerService } from 'src/app/services/customer.service';
+import { ToastrService } from 'ngx-toastr';
+import { PaymentService } from 'src/app/services/payment.service';
 
 @Component({
   selector: 'app-cardetail',
@@ -13,7 +18,22 @@ export class CardetailComponent implements OnInit {
 
   carImages:CarImage[]=[];
   cars:Car[]=[];
-  constructor(private carDetailService:CarDetailService,private activatedRoute:ActivatedRoute) { }
+  rental: Rental[]=[];
+  rentFlag = false;
+  minDate:Date = new Date();
+  rentTime:number;
+  rentDate:Date;
+  returnDate:Date;
+  maxDate:Date = new Date();
+  minSelected:boolean;
+  carId: number;
+  constructor(private carDetailService:CarDetailService,
+    private activatedRoute:ActivatedRoute, 
+    private rentalService:RentalService,
+    private customerService: CustomerService, 
+    private router: Router,
+    private toastrService: ToastrService,
+    private paymentService: PaymentService) { }
 
   ngOnInit(): void {
 
@@ -21,8 +41,7 @@ export class CardetailComponent implements OnInit {
       if(params["carId"]){
         this.getCarsById(params["carId"])
         this.getImagesById(params["carId"])
-
-        // this.getRentalsByCarId(params["id"])
+        this.getRent(params['carId'])
 
       }
 
@@ -39,5 +58,17 @@ export class CardetailComponent implements OnInit {
       this.carImages=response.data;
 
     })
+  }
+
+  getRent(carId: number) {
+    this.rentalService.getRentalByCar(carId).subscribe((response) => {
+      this.rental = response.data.filter((rent:Rental)=>rent.status==true);
+      if(this.rental.length>0){
+        this.rentFlag=true;
+      }
+      else{
+      this.rentFlag=false;
+      }
+    });
   }
 }
