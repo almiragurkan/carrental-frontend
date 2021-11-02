@@ -1,7 +1,7 @@
 import { Byte } from "@angular/compiler/src/util";
 
 export interface Car {
-    id: number;
+    carId: number;
     brandName: string;
     colorName: string;
     brandId:number;
@@ -9,6 +9,7 @@ export interface Car {
     modelYear: string;
     dailyPrice: number;
     description: string;
-    imagePath:string;
+    imagePath?:string;
     model:string;
+    minFindeksScore?:number;
   }

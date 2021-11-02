@@ -1,20 +1,17 @@
-.card-img-top {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-
-  }
   .card-header {
     text-align: center;
+    font-size: large;
   }
 
   .table {
     text-align: center;
     border-collapse: collapse;
+    width: 800px;
 
   }
 
   .table th {
     background-color: #b6bdb6;
     max-width: 75rem;
+    width: 800px;
   }
