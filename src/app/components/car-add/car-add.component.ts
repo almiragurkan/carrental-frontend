@@ -14,7 +14,7 @@ import { ColorService } from 'src/app/services/color.service';
   styleUrls: ['./car-add.component.css']
 })
 export class CarAddComponent implements OnInit {
-
+  carImageAddForm:FormGroup;
   carAddForm:FormGroup;
   brands: Brand[] = [];
   colors: Color[] = [];
@@ -36,7 +36,8 @@ export class CarAddComponent implements OnInit {
        colorId: ['', Validators.required],
        modelYear: ['', Validators.required],
        dailyPrice: ['', Validators.required],
-       description: ['', Validators.required]      
+       description: ['', Validators.required],
+       minFindexScore:['', Validators.required]      
     });
   }
 
@@ -63,6 +64,7 @@ export class CarAddComponent implements OnInit {
   car.colorId = Number(car.colorId);
   car.modelYear = String(car.modelYear);
   car.dailyPrice = Number(car.dailyPrice);
+  car.minFindexScore=Number(car.minFindexScore);
 
   if (!this.carAddForm.valid) {
      this.toastrService.warning('Lütfen boş bilgi bırakmayın', 'Dikkat');

@@ -12,10 +12,9 @@ export class CarDetailService {
   apiUrl="https://localhost:44387/api/"
   constructor(private httpClient:HttpClient) { }
 
-  getCarDetailById(carId:number):Observable<ListResponseModel<Car>>{
-    let newPath=this.apiUrl+"cars/GetCarDetailById?carId="+carId
+  getCarDetailsById(carId:number):Observable<ListResponseModel<Car>>{
+    let newPath=this.apiUrl+"cars/GetCarDetailsById?carId="+carId
     return this.httpClient.get<ListResponseModel<Car>>(newPath)
-
 
   }
 

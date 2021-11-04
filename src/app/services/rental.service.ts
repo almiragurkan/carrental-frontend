@@ -5,6 +5,8 @@ import { ListResponseModel } from '../models/listResponseModel';
 import { Rental } from '../models/rental';
 import { RentalDetails } from '../models/rentalDetails';
 import { ResponseModel } from '../models/responseModel';
+
+
 import { SingleResponseModel } from '../models/singleResponseModel';
 
 @Injectable({
@@ -24,15 +26,10 @@ export class RentalService {
     let newUrl = this.apiUrl + 'rentals/getbyid' + id;
     return this.httpClient.get<ListResponseModel<Rental>>(newUrl);
   }
-
-  checkCarStatus(rental:Rental):Observable<ResponseModel> {
-    let newPath = this.apiUrl + "rentals/checkcarstatus";
-    return this.httpClient.post<ResponseModel>(newPath,rental);
-  }
-
-  addRental(rental: Rental) {
+  
+  add(rental:Rental) : Observable<ResponseModel>{
     let newPath = this.apiUrl + 'rentals/add';
-    this.httpClient.post(newPath, rental).subscribe();
+    return this.httpClient.post<ResponseModel>(newPath, rental);
   }
 
   getRentalByCarId(carId:number) : Observable<SingleResponseModel<RentalDetails>>{

@@ -1,0 +1,22 @@
+<body class="text-center">
+  <div class="wrapper fadeInDown">
+    <div id="formContent">
+      <!-- Tabs Titles -->
+      <h2 class="active"> Giriş Yap </h2>
+  
+      <!-- Login Form -->
+      <form  [formGroup]="loginForm">
+        <input type="email" formControlName="email"  id="login" class="form-control" name="login" placeholder="e-mail">
+        <input type="password"  formControlName="password" id="password" class="form-control" name="login" placeholder="şifre">
+        <input type="submit" (click)="login()"class="fadeIn fourth" value="Giriş Yap">
+      </form>
+  
+      <!-- Remind Passowrd -->
+      <div id="formFooter">
+        <a class="underlineHover" routerLink="/register">Kayıt Ol</a>
+      </div>
+  
+    </div>
+  </div>
+  
+  </body>

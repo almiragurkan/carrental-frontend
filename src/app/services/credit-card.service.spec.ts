@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { FakecardService } from './fakecard.service';
+import { CreditCardService } from './credit-card.service';
 
-describe('FakecardService', () => {
-  let service: FakecardService;
+describe('CreditCardService', () => {
+  let service: CreditCardService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(FakecardService);
+    service = TestBed.inject(CreditCardService);
   });
 
   it('should be created', () => {

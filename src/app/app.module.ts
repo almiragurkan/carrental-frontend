@@ -1,9 +1,10 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import {HttpClientModule} from '@angular/common/http';
+import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import{FormsModule, ReactiveFormsModule} from "@angular/forms";
 import{BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import { JwtModule } from '@auth0/angular-jwt';
 
 import { AppComponent } from './app.component';
 import { NaviComponent } from './components/navi/navi.component';
@@ -27,7 +28,19 @@ import { BrandAddComponent } from './components/brand-add/brand-add.component';
 import { BrandListComponent } from './components/brand-list/brand-list.component';
 import { BrandUpdateDeleteComponent } from './components/brand-update-delete/brand-update-delete.component';
 import { CarListComponent } from './components/car-list/car-list.component';
-import { CarUpdateComponent } from './components/car-update/car-update.component'
+import { CarUpdateComponent } from './components/car-update/car-update.component';
+import { AccountComponent } from './components/account/account.component';
+import { LoginComponent } from './components/login/login.component';
+import { ColorAddComponent } from './components/color-add/color-add.component';
+import { ColorListComponent } from './components/color-list/color-list.component';
+import { ColorUpdateComponent } from './components/color-update/color-update.component';
+import { FooterComponent } from './components/footer/footer.component';
+import { RegisterComponent } from './components/register/register.component';
+import { AuthInterceptor } from './interceptors/auth.interceptor';
+
+export function tokenGetter() {
+  return localStorage.getItem("token");
+}
 
 @NgModule({
   declarations: [
@@ -50,7 +63,14 @@ import { CarUpdateComponent } from './components/car-update/car-update.component
     BrandListComponent,
     BrandUpdateDeleteComponent,
     CarListComponent,
-    CarUpdateComponent
+    CarUpdateComponent,
+    AccountComponent,
+    LoginComponent,
+    ColorAddComponent,
+    ColorListComponent,
+    ColorUpdateComponent,
+    FooterComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,
@@ -61,9 +81,15 @@ import { CarUpdateComponent } from './components/car-update/car-update.component
     BrowserAnimationsModule,
     ToastrModule.forRoot({
       positionClass:"toast-bottom-right"
+    }),
+    JwtModule.forRoot({
+      config:{
+        tokenGetter: tokenGetter,
+      }
     })
   ],
-  providers: [],
+  providers: [{
+    provide:HTTP_INTERCEPTORS,useClass:AuthInterceptor,multi:true}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

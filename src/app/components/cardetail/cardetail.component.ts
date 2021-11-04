@@ -48,7 +48,7 @@ export class CardetailComponent implements OnInit {
   });
   }
   getCarsById(id:number){
-    this.carDetailService.getCarDetailById(id).subscribe(response=>{
+    this.carDetailService.getCarDetailsById(id).subscribe(response=>{
       this.cars=response.data;
     })
   }

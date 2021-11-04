@@ -19,6 +19,8 @@
 
               <li class="list-group-item">Açıklama: {{car.description}}</li>
 
+              <li class="list-group-item" style="background-color: Cornsilk;">Findex Puan: {{car. minFindexScore}}</li>
+
               <h1 class="card-title pricing-card-title">  <p class="mt-1 card-text text-primary fs-3">₺{{ car.dailyPrice }}</p></h1>
 
 
@@ -29,7 +31,7 @@
               <div class="btn-group">
                 <button type="button" routerLink="/cars/car-detail/{{car.carId}}" class="btn btn-sm btn-outline-secondary">Detay</button>
               </div>
-              <small class="text-muted">9 mins</small>
+
             </div>
           </div>
         </div>

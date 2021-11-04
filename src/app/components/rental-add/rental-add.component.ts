@@ -14,6 +14,7 @@ import { CarDetailService } from 'src/app/services/car-detail.service';
 import { CarService } from 'src/app/services/car.service';
 import { FindexService } from 'src/app/services/findex.service';
 import { PaymentService } from 'src/app/services/payment.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-rental-add',
@@ -24,23 +25,26 @@ import { PaymentService } from 'src/app/services/payment.service';
 export class RentalAddComponent implements OnInit {
   
   cars: Car[]=[];
-  findexScore: Findex[] = []
   carDetails:Car;
 
   customers: Customer;
   customerId: Number;
+  findexScore:number;
   rentDate: Date;
   returnDate: Date;
   rentDateValue: Date;
   rentalCar: RentalDetails;
-  isRentBefore: Boolean = false;
+  minFindexScore:number;
+  rentFlag = false;
 
   constructor( private carService: CarService,
     private carDetailByIdService:CarDetailService,
     private activatedRoute: ActivatedRoute,
-    private rentalService: RentalService,
+
     private paymentService: PaymentService,
     private router : Router,
+    public authService:AuthService,
+
     private customerService : CustomerService,
     private toastrService : ToastrService,
     ) { }
@@ -49,85 +53,73 @@ export class RentalAddComponent implements OnInit {
     this.activatedRoute.params.subscribe(params=>{
       if(params["carId"]){
        this.getCarsById(params["carId"])
-
-       this.getRentalByCarId(params["carId"]);
     }
 
+    })
+    this.getCustomerByUserId(this.authService.userId);
+  }
+
+  getCustomerByUserId(userId:number){
+    this.customerService.getCustomersByUserId(userId).subscribe(response => {
+      this.customers = response.data;
     })
   }
 
   getCarsById(carId:number){
-    this.carDetailByIdService.getCarDetailById(carId).subscribe(response=>{     
-      this.cars=response.data;    
+    this.carDetailByIdService.getCarDetailsById(carId).subscribe(response=>{     
+     this.cars=response.data;    
     })
-}
-getRentMinDate(){
-  var today  = new Date();
-  today.setDate(today.getDate() + 1);
-  return today.toISOString().slice(0,10)
-}
+  }
 
-getReturnMinDate(){
-  var today  = new Date();
-  today.setDate(today.getDate() + 2);
-  return today.toISOString().slice(0,10)
-}
+  getRentMinDate(){
+    var today  = new Date();
+    today.setDate(today.getDate() + 1);
+    return today.toISOString().slice(0,10)
+  }
 
-getRentalByCarId(id: number) {
-  this.rentalService.getRentalByCarId(id).subscribe(response => {
-    if (response.data == null) {
-      this.isRentBefore = false;
-    } else {
-      this.rentalCar = response.data;
-      this.isRentBefore = true;
+  getReturnMinDate(){
+    var today  = new Date();
+    today.setDate(today.getDate() + 2);
+    return today.toISOString().slice(0,10)
+  }
+
+
+  createRental(){
+    let MyRental:Rental = {
+      rentDate: this.rentDate,
+      returnDate: this.returnDate?this.returnDate:null,
+      carId: this.cars[0].carId,
+      customerId:this.customers.userId
+  }
+
+    this.paymentService.addToCart(MyRental);
+    this.router.navigate(['/payments/']);
+    this.toastrService.info("Ödeme sayfasına yönlendiriliyorsunuz...", "Ödeme İşlemleri");
+
+  }
+
+  checkClick(){
+    let m:Findex={
+      minFindexScore:this.cars[0].minFindexScore,
+      findexScore:this.customers.findexScore
+
     }
-  })
-}
 
-createRental(){
-  let MyRental:Rental = {
-    rentDate: this.rentDate,
-    returnDate: this.returnDate?this.returnDate:null,
-    carId: this.cars[0].carId,
-    customerId: this.customers.userId
-  }
+    if(m.findexScore<m.minFindexScore){
+      this.rentFlag=true
 
-  this.router.navigate(['/payment/']);
-  this.toastrService.info("Ödeme sayfasına yönlendiriliyorsunuz...", "Ödeme İşlemleri");
+    }
+    else{
+      this.rentFlag=false
+    }
 
-}
-checkAvailability() {
-
-  if (!this.isRentBefore) {
-    return true;
-  } else {
-    return this.rentedBeforeCarCheck();
-  }
-}
-
-rentedBeforeCarCheck() {
-  var now = new Date();
-  now.setHours(0, 0, 0, 0);
-  let today = formatDate(now, 'yyyy/MM/dd', 'en');
-  let oldDate = formatDate(this.rentalCar.returnDate, 'yyyy/MM/dd', 'en');
-}
-
-checkClick(){
-  if (this.checkAvailability() == true) {
-    if (this.rentDate == null ) {
-      this.toastrService.warning("Başlangıç tarihi ve şirket seçimi zorunludur!", "Eksik Form");
+    if (this.rentDate==null && this.returnDate==null && this.customerId==null) {
+      this.toastrService.warning('Lütfen boş bilgi bırakmayın', 'Dikkat');
+      return;
+    }else if(this.rentFlag==true){
+      this.toastrService.warning('Yetersiz Findex ', 'Dikkat');
     }else{
-      if (this.returnDate == null || this.returnDate > this.rentDate) {
-        this.toastrService.success("Araç kiralanabilir.", "Araç Uygun");
-        this.createRental();
-      }else if(this.returnDate < this.rentDate){
-        this.toastrService.error("Dönüş tarihi başlangıç tarihinden küçük olamaz!");
-      }else if (this.returnDate == this.rentDate){
-        this.toastrService.error("Kiralama işlemi en az 1 gün olmalıdır!");
-      }
+      this.createRental();
     }
-  }else{
-    this.toastrService.warning("Araç kiralama işlemi gerçekleşemez.", "Araç Kullanımda");
   }
-}
 }

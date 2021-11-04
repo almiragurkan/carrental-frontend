@@ -11,5 +11,5 @@ export interface Car {
     description: string;
     imagePath?:string;
     model:string;
-    minFindeksScore?:number;
+    minFindexScore?:number;
   }

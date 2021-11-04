@@ -14,7 +14,7 @@ export class PaymentService {
   apiUrl = 'https://localhost:44387/api/';
   constructor(private httpClient:HttpClient) { }
 
-  ddPayment(payment:Payment) : Observable<ResponseModel>{
+  addPayment(payment:Payment) : Observable<ResponseModel>{
     let newPath = this.apiUrl + "payments/add"
     return this.httpClient.post<ResponseModel>(newPath, payment);
   }
