@@ -4,6 +4,5 @@ export interface Customer{
     userName?:string;
     email?:string;
     companyName:string;
-    findexScore:number;
 
 }

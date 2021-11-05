@@ -71,20 +71,20 @@ export class CarUpdateComponent implements OnInit {
 
     car.brandId = Number(car.brandId);
     car.colorId = Number(car.colorId);
-    car.modelYear = String(car.modelYear);
+    car.modelYear = Number(car.modelYear);
     car.dailyPrice = Number(car.dailyPrice);
+    car.description = String(car.description);
 
     if (!this.carUpdateForm.valid) {
        this.toastrService.warning('Lütfen boş bilgi bırakmayın', 'Dikkat');
        return;
     }
-
+    console.log(car)
     this.carService.update(car).subscribe(response => {
         this.toastrService.success(response.message,'Başarılı');
     }, responseError => {
+       console.log(responseError);
        if (responseError.error.ValidationErrors.length> 0) {
-
-
        for (let i = 0; i < responseError.error.ValidationErrors.length; i++) {
           this.toastrService.error(
              responseError.error.ValidationErrors[i].ErrorMessage, 'Doğrulama Hatası'

@@ -13,8 +13,7 @@ export class CarComponent implements OnInit {
   cars:Car[]=[];
   filterText="";
   image=false;
-  constructor(private carService:CarService,  private activatedRoute:ActivatedRoute,
-    ) { }
+  constructor(private carService:CarService,  private activatedRoute:ActivatedRoute) { }
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(params=>{

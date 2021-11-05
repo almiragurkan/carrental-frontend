@@ -6,10 +6,9 @@ export interface Car {
     colorName: string;
     brandId:number;
     colorId:number;
-    modelYear: string;
+    modelYear: number;
     dailyPrice: number;
     description: string;
     imagePath?:string;
     model:string;
-    minFindexScore?:number;
   }

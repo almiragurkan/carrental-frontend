@@ -5,14 +5,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Car } from 'src/app/models/car';
 import { Customer } from 'src/app/models/customer';
-import { Findex } from 'src/app/models/findex';
 import { Rental } from 'src/app/models/rental';
 import { RentalDetails } from 'src/app/models/rentalDetails';
 import { CustomerService } from 'src/app/services/customer.service';
 import { RentalService } from 'src/app/services/rental.service';
 import { CarDetailService } from 'src/app/services/car-detail.service';
 import { CarService } from 'src/app/services/car.service';
-import { FindexService } from 'src/app/services/findex.service';
 import { PaymentService } from 'src/app/services/payment.service';
 import { AuthService } from 'src/app/services/auth.service';
 
@@ -29,12 +27,10 @@ export class RentalAddComponent implements OnInit {
 
   customers: Customer;
   customerId: Number;
-  findexScore:number;
   rentDate: Date;
   returnDate: Date;
   rentDateValue: Date;
   rentalCar: RentalDetails;
-  minFindexScore:number;
   rentFlag = false;
 
   constructor( private carService: CarService,
@@ -99,25 +95,9 @@ export class RentalAddComponent implements OnInit {
   }
 
   checkClick(){
-    let m:Findex={
-      minFindexScore:this.cars[0].minFindexScore,
-      findexScore:this.customers.findexScore
-
-    }
-
-    if(m.findexScore<m.minFindexScore){
-      this.rentFlag=true
-
-    }
-    else{
-      this.rentFlag=false
-    }
-
     if (this.rentDate==null && this.returnDate==null && this.customerId==null) {
       this.toastrService.warning('Lütfen boş bilgi bırakmayın', 'Dikkat');
       return;
-    }else if(this.rentFlag==true){
-      this.toastrService.warning('Yetersiz Findex ', 'Dikkat');
     }else{
       this.createRental();
     }

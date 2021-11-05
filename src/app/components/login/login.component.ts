@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators,FormControl} from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/services/auth.service';
+import { LocalStorageService } from 'src/app/services/local-storage.service';
 
 @Component({
   selector: 'app-login',
@@ -16,7 +17,8 @@ export class LoginComponent implements OnInit {
     private formBuilder:FormBuilder,  
     private authService:AuthService, 
     private toastrService:ToastrService, 
-    private router:Router) { }
+    private router:Router,
+    private localStorageService:LocalStorageService) { }
 
   ngOnInit(): void {
     this.createLoginForm();
@@ -29,12 +31,12 @@ createLoginForm(){
 }
 login(){
   if(this.loginForm.valid){
-    console.log(this.loginForm.value);
     let loginModel = Object.assign({},this.loginForm.value)
 
     this.authService.login(loginModel).subscribe(response=>{
       console.log(response.token)
-      localStorage.setItem("token", response.token.token)
+      //localStorage.setItem("token", response.token.token)
+      this.localStorageService.saveToken(response.token.toString())
       this.toastrService.success("Giriş Başarılı")
       this.authService.onRefresh()
       this.router.navigateByUrl('/');

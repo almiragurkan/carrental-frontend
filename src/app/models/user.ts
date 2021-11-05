@@ -4,5 +4,4 @@ export interface User {
     lastName: string;
     email: string;
     status: boolean;
-    findexScore:number
   }

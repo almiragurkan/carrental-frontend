@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Brand } from 'src/app/models/brand';
@@ -12,7 +12,7 @@ import { BrandService } from 'src/app/services/brand.service';
 })
 export class BrandUpdateDeleteComponent implements OnInit {
 
-  brands: Brand;
+  brand: Brand;
   brandUpdateForm: FormGroup;
   brandId:number;
   brandName:string;
@@ -28,20 +28,20 @@ export class BrandUpdateDeleteComponent implements OnInit {
    this.activatedRoute.params.subscribe((params) => {
      if (params['brandId']) {
        this.getBrandById(params['brandId']);
-       this.createBrandUpdateForm();
+       this.createBrandForm();
      }
    });
   }
 
   getBrandById(brandId: number) {
    this.brandService.getById(brandId).subscribe((response) => {
-    this.brands = response.data;
-    this.brandId= this.brands.brandId
-    this.brandName = this.brands.brandName
-    this.model=this.brands.model
+    this.brand = response.data;
+    this.brandId= this.brand.brandId
+    this.brandName = this.brand.brandName
+    this.model=this.brand.model
    });
  }
-  createBrandUpdateForm() {
+  createBrandForm() {
    this.brandUpdateForm = this.formBuilder.group({
      brandId: [Validators.required],
      brandName: [Validators.required],
@@ -52,9 +52,11 @@ export class BrandUpdateDeleteComponent implements OnInit {
 
   update() {
    if (this.brandUpdateForm.valid) {
+    this.brandUpdateForm.addControl("colorId", new FormControl(this.brand.brandId))
      let brandModel = Object.assign({}, this.brandUpdateForm.value);
      this.brandService.update(brandModel).subscribe((response) => {
-       this.toastrService.success(response.message, 'Başarılı');
+       this.toastrService.success('Başarılı')
+       this.router.navigate(["/brands/list"])
      });
    }
  }

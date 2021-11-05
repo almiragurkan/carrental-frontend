@@ -11,8 +11,8 @@ export class LocalStorageService {
 
   getItem(token:string){
     return localStorage.getItem(token);
-
    }
+
    clean(){
      localStorage.clear()
    }
@@ -20,6 +20,7 @@ export class LocalStorageService {
    saveToken(value: string) {
     localStorage.removeItem('token');
     localStorage.setItem('token', value);
+    console.log(value)
   }
 
   getToken() {

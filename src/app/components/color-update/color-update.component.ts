@@ -13,7 +13,7 @@ import { ColorService } from 'src/app/services/color.service';
 export class ColorUpdateComponent implements OnInit {
 
   color: Color
-  colorUpdateForm: FormGroup
+  colorUpdateForm: FormGroup;
   colorId:number;
   colorName:string;
   constructor(private colorService: ColorService,
@@ -54,7 +54,7 @@ export class ColorUpdateComponent implements OnInit {
       this.colorUpdateForm.addControl("colorId", new FormControl(this.color.colorId))
       let brandModel = Object.assign({}, this.colorUpdateForm.value)
       this.colorService.update(brandModel).subscribe(response => {
-        this.toastrService.success( "Success")
+        this.toastrService.success( "Başarılı")
         this.router.navigate(["/colors/list"])
       }, responseError => {
         if (responseError.error.Errors.length > 0)
