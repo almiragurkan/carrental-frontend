@@ -25,7 +25,6 @@ export class AccountComponent implements OnInit {
     if (this.isAuthenticated()) {
       this.authService.userDetailFromToken();
       this.createUpdateForm();
-      console.log(this.updateForm);
       this.updateForm.patchValue({
         id: this.authService.userId,
         firstName: this.authService.name,

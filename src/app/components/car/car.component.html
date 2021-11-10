@@ -7,8 +7,11 @@
       <div *ngFor="let car of cars " class="col">
         <div class="card bg-light rounded-2 shadow overflow-hidden">
            
-          <img src="assets/carimages/{{car.carId}}/1.jpg" type="button" routerLink="/cars/car-detail/{{car.carId}}"width="100%" height="225" class="card-img-top" alt="" onError="this.onerror=null;this.src='assets/img/logo.jpg';">
-          
+          <!-- <img src="assets/carimages/{{car.carId}}/1.jpg" type="button" routerLink="/cars/car-detail/{{car.carId}}"width="100%" height="225" class="card-img-top" alt="" onError="this.onerror=null;this.src='assets/img/logo.jpg';"> -->
+          <img  *ngIf="car.imagePath!=null" src="https://localhost:44387/{{car.imagePath}}" type="button" routerLink="/cars/car-detail/{{car.carId}}"width="100%" height="225" class="card-img-top" alt="..."> 
+          <img  *ngIf="car.imagePath==null" src="assets/img/logo.jpg" type="button" routerLink="/cars/car-detail/{{car.carId}}"width="100%" height="225" class="card-img-top" alt="..."> 
+
+ 
 
           <div class="card-body">
             <ul class="list-group list-group-flush"> 

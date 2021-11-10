@@ -34,7 +34,7 @@ login(){
     let loginModel = Object.assign({},this.loginForm.value)
 
     this.authService.login(loginModel).subscribe(response=>{
-      console.log(response.token)
+      //console.log(response.token)
       //localStorage.setItem("token", response.token.token)
       this.localStorageService.saveToken(response.token.toString())
       this.toastrService.success("Giriş Başarılı")

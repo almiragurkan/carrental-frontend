@@ -20,7 +20,7 @@ export class LocalStorageService {
    saveToken(value: string) {
     localStorage.removeItem('token');
     localStorage.setItem('token', value);
-    console.log(value)
+    //console.log(value)
   }
 
   getToken() {

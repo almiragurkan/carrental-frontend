@@ -108,7 +108,7 @@ export class PaymentComponent implements OnInit {
     this.carService.getCarDetailsById(id).subscribe(response => {
 
       this.cars=response.data;
-      console.log(this.cars);
+      //console.log(this.cars);
 
       if (this.cartItems[0].rental.returnDate != null) {
         var rentDate = new Date(this.cartItems[0].rental.rentDate);

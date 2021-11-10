@@ -87,7 +87,7 @@ export class AuthService {
 
     userDetailFromToken(){
       this.token = this.localStorageService.getToken();
-      console.log(this.token);
+      //console.log(this.token);
       let decodedToken = this.jwtHelper.decodeToken(this.token);
       let name = decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'];
       this.name = name.split(' ')[0];
